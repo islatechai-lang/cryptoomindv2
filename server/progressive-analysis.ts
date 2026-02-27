@@ -95,7 +95,7 @@ export async function generateProgressivePrediction(
       { action: "TREND", status: "SUCCESS", timestamp: formatTime(), details: `ANCHOR TREND: ${indicators.trendBias.toUpperCase()} | ENTRY TREND: ${indicators.trendBias.toUpperCase()} ` },
       { action: "AUDIT", status: "SUCCESS", timestamp: formatTime(), details: "SAFETY AUDIT COMPLETE. COMMENCING SENTIMENT ANALYSIS..." },
       { action: "AGGREGATE", status: "SUCCESS", timestamp: formatTime(), details: "AGGREGATING SIGNALS: CALCULATING CONVICTION SCORE..." },
-      { action: "AI_INIT", status: "SUCCESS", timestamp: formatTime(), details: "INITIALIZING GEMINI-3-PRO: EXECUTING STRATEGIC REASONING..." },
+      { action: "AI_INIT", status: "SUCCESS", timestamp: formatTime(), details: "INITIALIZING GEMINI-3.1-PRO: EXECUTING STRATEGIC REASONING..." },
     ];
 
     const allLogs = [...logs];
@@ -276,9 +276,9 @@ export async function generateProgressivePrediction(
     await delay(800);
 
 
-    // STAGE 7: AI Strategic Insights (Gemini 3 Pro)
+    // STAGE 7: AI Strategic Insights (Gemini 3.1 Pro)
     sendStageUpdate(ws, "ai_thinking", 0, "in_progress", {
-      message: "Gemini 3 Pro analyzing market conditions..."
+      message: "Gemini 3.1 Pro analyzing market conditions..."
     });
     await delay(1000);
 

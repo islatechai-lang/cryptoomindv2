@@ -329,11 +329,11 @@ Based on this multi-timeframe technical analysis, provide your trading decision.
   };
 
   try {
-    console.log('\n🤖 Calling Gemini 3 Pro Preview with THINKING mode (streaming)...');
-    const decision = await callGeminiModelStreaming("gemini-3-pro-preview", systemPrompt, analysisText, schema, true, ws);
+    console.log('\n🤖 Calling Gemini 3.1 Pro Preview with THINKING mode (streaming)...');
+    const decision = await callGeminiModelStreaming("gemini-3.1-pro-preview", systemPrompt, analysisText, schema, true, ws);
 
     if (decision) {
-      console.log(`✅ Gemini 3 Pro Preview Decision: ${decision.direction} | ${decision.confidence}%`);
+      console.log(`✅ Gemini 3.1 Pro Preview Decision: ${decision.direction} | ${decision.confidence}%`);
       console.log(`   Rationale: ${decision.rationale}`);
       if (decision.thinkingProcess) {
         console.log(`   🧠 Thinking captured (${decision.thinkingProcess.length} chars)`);
@@ -341,7 +341,7 @@ Based on this multi-timeframe technical analysis, provide your trading decision.
       return decision;
     }
   } catch (error: any) {
-    console.warn(`⚠️  Gemini 3 Pro Preview failed: ${error.message}`);
+    console.warn(`⚠️  Gemini 3.1 Pro Preview failed: ${error.message}`);
     console.log('🔄 Falling back to Gemini 2.5 Pro with THINKING mode...');
 
     try {

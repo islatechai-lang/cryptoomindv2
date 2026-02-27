@@ -9,6 +9,7 @@ import AdminDashboard from "@/pages/AdminDashboard";
 import WebhookTester from "@/pages/WebhookTester";
 import { whopIframeSdk } from "./lib/whop-iframe";
 import { useEffect, useState } from "react";
+import UpgradeAnnouncementModal from "@/components/UpgradeAnnouncementModal";
 
 function AdminRedirect() {
   const [, setLocation] = useLocation();
@@ -170,6 +171,7 @@ function App() {
             <Router />
           </div>
           <Toaster />
+          <UpgradeAnnouncementModal />
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
