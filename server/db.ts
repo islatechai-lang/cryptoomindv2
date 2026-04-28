@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
   name: { type: String, required: true },
   profilePictureUrl: { type: String, default: null },
-  credits: { type: Number, required: true, default: 3 },
+  credits: { type: Number, required: true, default: 1 },
   hasUnlimitedAccess: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },

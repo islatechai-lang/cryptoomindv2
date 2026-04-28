@@ -218,7 +218,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let userCredits = await storage.getUserCredits(userId);
 
       if (!userCredits) {
-        await storage.setUserCredits(userId, 3);
+        await storage.setUserCredits(userId, 1);
         userCredits = await storage.getUserCredits(userId);
       }
 
@@ -2308,7 +2308,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let userCredits = await storage.getUserCredits(userId);
 
       if (!userCredits) {
-        await storage.setUserCredits(userId, 3);
+        await storage.setUserCredits(userId, 1);
         userCredits = await storage.getUserCredits(userId);
       }
 
