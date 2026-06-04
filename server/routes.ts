@@ -2347,10 +2347,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       if (ws.readyState !== WebSocket.OPEN) return;
 
-      // Only deduct credits if we got an actionable prediction (UP or DOWN, not NEUTRAL)
-      const isActionablePrediction = prediction.direction !== "NEUTRAL";
-
-      if (isActionablePrediction && !userCredits.hasUnlimitedAccess) {
+      // Deduct credits for all analyses run
+      if (!userCredits.hasUnlimitedAccess) {
         const success = await storage.decrementUserCredits(userId);
 
         if (!success) {
@@ -2392,23 +2390,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ws.send(JSON.stringify(creditsUpdateMsg));
       }
 
-      // Inform user about credit status based on prediction type
+      // Inform user about credit status
       setTimeout(() => {
         if (ws.readyState !== WebSocket.OPEN) return;
 
-        let followUpContent: string;
-
-        if (!isActionablePrediction) {
-          // NEUTRAL prediction - no credits consumed
-          followUpContent = "No credits consumed for this analysis. Market conditions didn't meet our confidence threshold. Try another pair!";
-        } else {
-          // Actionable prediction - credits were deducted
-          followUpContent = "Want another prediction? Pick a different pair below.";
-        }
-
         const followUpMsg: ServerMessage = {
           type: "bot_message",
-          content: followUpContent,
+          content: "Want another prediction? Pick a different pair below.",
         };
         ws.send(JSON.stringify(followUpMsg));
       }, 1000);
