@@ -745,7 +745,7 @@ export async function generateAIPrediction(pair: TradingPair, timeframe: string 
 
     const result = combineWeightedSignals(signals, 0, indicators.marketRegime);
 
-    if (result.direction === "NEUTRAL" || result.qualityScore < 60) {
+    if (result.direction === "NEUTRAL" || result.qualityScore < 45) {
       console.log(`❌ No trade signal - Quality too low (${result.qualityScore.toFixed(0)}%)`);
       console.log(`${'='.repeat(60)}\n`);
 
@@ -766,7 +766,7 @@ export async function generateAIPrediction(pair: TradingPair, timeframe: string 
 
     const finalResult = combineWeightedSignals(signals, volumeBonus, indicators.marketRegime);
 
-    if (finalResult.confidence < 90) {
+    if (finalResult.confidence < 75) {
       console.log(`⏳ Confidence too low (${finalResult.confidence}%) - waiting for better setup`);
       console.log(`${'='.repeat(60)}\n`);
 

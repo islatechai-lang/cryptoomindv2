@@ -221,87 +221,18 @@ function calculateValidatedConfidence(
   shouldProceed: boolean;
   rejectionReason: string | null;
 } {
-  // SUPER OVERRIDE: If the AI is highly confident (>=85%), trust the AI and override technical warnings.
-  if (baseConfidence >= 85) {
+  // SUPER OVERRIDE: Allow any trade setup with confidence >= 50% to proceed.
+  if (baseConfidence >= 50) {
     return {
       confidence: baseConfidence,
       shouldProceed: true,
       rejectionReason: null,
     };
   }
-
-  // SEMI-OVERRIDE: If confidence is 80-84%, ONLY strictly invalidating flaws should stop it.
-  // We want to avoid "thinking says yes, verdict says no" for decent setups.
-  const isDecentSetup = baseConfidence >= 80;
-
-  // Rule 1: Minimum confidence threshold (Adjusted from 90 to 80)
-  if (baseConfidence < 80) {
-    return {
-      confidence: baseConfidence,
-      shouldProceed: false,
-      rejectionReason: `Confidence below minimum threshold (${baseConfidence}% < 80%)`,
-    };
-  }
-
-  // Rule 2: Trend alignment (Relaxed: Allow counter-trend if confidence is decent > 80)
-  // If decent setup (80+), we ignore trend conflict if it's not catastrophic.
-  if (!trendAlignment && !isDecentSetup) {
-    return {
-      confidence: baseConfidence,
-      shouldProceed: false,
-      rejectionReason: "Trend Conflict: Counter-trend setups require confidence > 80%",
-    };
-  }
-
-  // Rule 3: Volume confirmation (Relaxed)
-  // If decent setup, allow lower volume (0.8x)
-  const volThreshold = isDecentSetup ? 0.8 : 1.0;
-  if (volumeRatio < volThreshold && baseConfidence < 85) {
-    return {
-      confidence: baseConfidence,
-      shouldProceed: false,
-      rejectionReason: `Low volume (${volumeRatio.toFixed(2)}x) requires higher baseline confidence`,
-    };
-  }
-
-  // Rule 4: Volume divergence check (Only reject if extreme, override threshold 90→85)
-  if (hasVolumeDivergence && baseConfidence < 85) {
-    return {
-      confidence: baseConfidence,
-      shouldProceed: false,
-      rejectionReason: "Volume divergence detected - weak breakout/breakdown",
-    };
-  }
-
-  // Rule 5: RSI neutral zone (Much tighter now: 48-52)
-  // Rule 5: RSI neutral zone (Much tighter now: 49-51)
-  if (rsiNeutral && baseConfidence < 85) {
-    // Only reject if confidence isn't very high. If AI is 90% sure, ignore RSI neutral.
-    return {
-      confidence: baseConfidence,
-      shouldProceed: false,
-      rejectionReason: "RSI in tight neutral zone - low momentum",
-    };
-  }
-
-  // Rule 6: ADX < 15 = ranging market (Relaxed from 20)
-  // Rule 6: ADX < 12 = ranging market (Relaxed from 15)
-  // Rule 6: ADX Check
-  // If confidence is >= 80%, we TRUST the AI's judgment on volatility (e.g. trading a breakout from a squeeze).
-  // We only block low ADX for low-confidence/weak signals.
-  if (!isDecentSetup && adxValue < 12) {
-    return {
-      confidence: baseConfidence,
-      shouldProceed: false,
-      rejectionReason: "ADX < 12 - Dead market, no volatility",
-    };
-  }
-
-  // All checks passed or overridden by high confidence
   return {
-    confidence: Math.min(99, baseConfidence), // Allow up to 99%
-    shouldProceed: true,
-    rejectionReason: null,
+    confidence: baseConfidence,
+    shouldProceed: false,
+    rejectionReason: `Confidence below minimum threshold (${baseConfidence}% < 50%)`,
   };
 }
 
